@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Watch.Views.SigninPage"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="EntryStyle" TargetType="Entry">
+                <Setter Property="PlaceholderColor" Value="LightGray"/>
+            </Style>
+            <Style x:Key="Label_LoginErrorMessage_Style" TargetType="Label">
+                <Setter Property="TextColor" Value="Red"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <OnPlatform.Platforms>
+                <On Platform="iOS"     Value="10, 20, 10, 10" />
+                <On Platform="Android" Value="10, 10, 10, 10" />
+                <On Platform="UWP"     Value="10, 10, 10, 10" />
+            </OnPlatform.Platforms>
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackLayout VerticalOptions="CenterAndExpand" 
+                         Grid.Row="0" 
+                         Grid.Column="0">
+                <Label   x:Name="Lable_UserLogin"    
+                         Text="Login:"/>
+                <Entry   x:Name="Entry_UserLogin"    
+                         Placeholder="Input user login here"
+                         Text="{x:Binding UserLogin}"
+                         Style="{StaticResource EntryStyle}"/>
+                <Label   x:Name="Label_UserPassword" 
+                         Text="Password:"/>
+                <Entry   x:Name="Entry_UserPassword" 
+                         Placeholder="Input user password here..." 
+                         IsPassword="True" 
+                         Text="{x:Binding UserPassword}"
+                         Style="{StaticResource EntryStyle}"/>
+                <Label   x:Name="Label_LoginErrorMessage" 
+                         Text="{x:Binding SigninErrorMessage}"
+                         Style="{StaticResource Label_LoginErrorMessage_Style}"/>
+                <Button  x:Name="Button_Signin" 
+                         Text="Signin" 
+                         Command="{x:Binding MoveToWatchListPage}"
+                         Style="{StaticResource Primary_Button}"/>
+            </StackLayout>
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

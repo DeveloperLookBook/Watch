@@ -4,16 +4,14 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Watch.ViewModels
 {
-    public class MainPageViewModel : ViewModelBase
+    public class UpdateWatchPageViewModel : ViewModelBase
     {
-        public MainPageViewModel(INavigationService navigationService)
+        public UpdateWatchPageViewModel(INavigationService navigationService) 
             : base(navigationService)
         {
-            Title = "Main Page";
         }
     }
 }

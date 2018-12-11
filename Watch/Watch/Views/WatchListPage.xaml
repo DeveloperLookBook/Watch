@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Watch.Views.WatchListPage"
+             Title="{Binding Title}"
+             NavigationPage.HasNavigationBar="False">
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            
+        </ResourceDictionary> 
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout HorizontalOptions="Fill">
+            <Button Text="Add watch" 
+                    Style  ="{StaticResource Primary_Button}"
+                    Command="{Binding MoveToCreateWatchPage}"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

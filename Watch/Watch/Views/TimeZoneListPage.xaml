@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             x:Class="Watch.Views.TimeZoneListPage">
+    <ContentPage.Content>
+        <StackLayout>
+            <Button Text="Save" 
+                    Margin="0,0,0,20" 
+                    Command="{x:Binding      MoveToCreateWatchPage}"
+                    Style  ="{StaticResource Primary_Button}"/>
+            <ListView x:Name="ListView_Colors" 
+                  SelectionMode="Single"
+                  SelectedItem="{x:Binding SelectedTimeZone, Mode=TwoWay}"
+                  ItemsSource ="{x:Binding TimeZones}">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <ViewCell.View>
+                                <Label Text="{x:Binding DisplayName}"/>
+                            </ViewCell.View>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>
