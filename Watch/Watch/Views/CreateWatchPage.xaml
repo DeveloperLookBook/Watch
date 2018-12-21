@@ -2,6 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:prism="clr-namespace:Prism.Mvvm;assembly=Prism.Forms"
+             xmlns:Local="clr-namespace:Watch.Controls"
              prism:ViewModelLocator.AutowireViewModel="True"
              x:Class="Watch.Views.CreateWatchPage">
     <ContentPage.Resources>
@@ -9,14 +10,17 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Fill">
-            <Button x:Name="Button_WatchTimeZone" 
+            <Local:AnalogWatch TimeZone   ="{x:Binding WatchTimeZone}" 
+                               ArrowsColor="{x:Binding WatchArrowsColor}" 
+                               DialColor  ="{x:Binding WatchDialColor}"/>
+            <Button x:Name ="Button_WatchTimeZone" 
                     Text   ="Change Time Zone..."
                     Command="{x:Binding MoveToTimeZoneListPage}"/>
-            <Button x:Name="Button_WatchDialColor"
-                    Text  ="Change Dial Color..."
+            <Button x:Name ="Button_WatchDialColor"
+                    Text   ="Change Dial Color..."
                     Command="{x:Binding SelectWatchDialColor  }"/>
-            <Button x:Name="Button_WatchArrowsColor"
-                    Text  ="Change Arrows Color..."
+            <Button x:Name ="Button_WatchArrowsColor"
+                    Text   ="Change Arrows Color..."
                     Command="{x:Binding SelectWatchArrowsColor}"/>
             <Grid>
                 <Grid.ColumnDefinitions>

@@ -24,7 +24,7 @@ namespace Watch.ViewModels
 
         #endregion
 
-        #region BINDABLE PROPERTIES
+        #region PROPERTIES
 
         public TimeZoneInfo WatchTimeZone
         {
@@ -111,7 +111,7 @@ namespace Watch.ViewModels
         {
             var parameters = new NavigationParameters
             {
-                { nameof(this.WatchArrowsColor), this.WatchArrowsColor }
+                { nameof(this.WatchDialColor), this }
             };
 
             await this.NavigationService.NavigateAsync($@"/{nameof(ColorListPage)}", parameters);

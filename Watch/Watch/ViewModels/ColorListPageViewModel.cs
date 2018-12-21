@@ -36,6 +36,7 @@ namespace Watch.ViewModels
 
         public string NavigationParameterKey { get; set; }
 
+        private CreateWatchPageViewModel CreateWatchPageViewModel { get; set; }
         #endregion
 
 
@@ -73,8 +74,8 @@ namespace Watch.ViewModels
 
             if (parameters.ContainsKey("WatchDialColor"))
             {
-                this.NavigationParameterKey = "WatchDialColor";
-                this.SelectedColor          = parameters.GetValue<Color>("WatchDialColor");
+                this.NavigationParameterKey   = "WatchDialColor";
+                this.SelectedColor = parameters.GetValue<Color>("WatchDialColor");
             }
             else if (parameters.ContainsKey("WatchArrowsColor"))
             {
@@ -85,15 +86,17 @@ namespace Watch.ViewModels
 
         public async void MoveToCreateWatchPageAsync()
         {
-            NavigationParameters parameters = new NavigationParameters
-            {
-                { this.NavigationParameterKey, this.SelectedColor }
-            };
-            
-            await this.NavigationService.NavigateAsync(nameof(CreateWatchPage), parameters);
-            
+            //NavigationParameters parameters = new NavigationParameters
+            //{
+            //    { this.NavigationParameterKey, this.SelectedColor }
+            //};
+
+            await this.NavigationService.NavigateAsync(nameof(CreateWatchPage));
+
             // This method doesn't work =(
-            //await this.NavigationService.GoBackAsync(parameters);
+            //var result = await this.NavigationService.GoBackAsync(parameters);
+
+            //await this.NavigationService.GoBackAsync();
         }
 
         #endregion

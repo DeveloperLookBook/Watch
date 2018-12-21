@@ -54,7 +54,6 @@ namespace Watch.ViewModels
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
             this.SelectedTimeZone = parameters.GetValue<TimeZoneInfo>(nameof(this.SelectedTimeZone));
-
         }
     }
 }

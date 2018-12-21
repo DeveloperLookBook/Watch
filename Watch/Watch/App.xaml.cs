@@ -56,7 +56,7 @@ namespace Watch
             containerRegistry.RegisterForNavigation<UpdateWatchPage , UpdateWatchPageViewModel >();
             containerRegistry.RegisterForNavigation<CreateWatchPage , CreateWatchPageViewModel >();
             containerRegistry.RegisterForNavigation<TimeZoneListPage, TimeZoneListPageViewModel>();
-            containerRegistry.RegisterForNavigation<ColorListPage  , ColorListPageViewModel   >();
+            containerRegistry.RegisterForNavigation<ColorListPage   , ColorListPageViewModel   >();
         }
 
         public void AddSeedToDataBase(IAppDbContext context)
@@ -75,8 +75,6 @@ namespace Watch
                 context.SaveChanges();
             }
         }
-
-
 
         ~App()
         {
