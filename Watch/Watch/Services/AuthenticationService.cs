@@ -26,7 +26,7 @@ namespace Watch.Services
             this.UserService       = userService;
         }
 
-        public async Task<bool> SigninAsync(string login, string password)
+        public async Task<bool> IsUserValid(string login, string password)
         {
             bool areCredentialsValid = false;
             IUser user               = await this.UserRepository
@@ -36,18 +36,10 @@ namespace Watch.Services
             if (user != null && user.Credentials.Password == password)
             {
                 this.UserService.Id = user.Id;
-
-                await this.NavigationService.NavigateAsync($@"/{nameof(WatchListPage)}");
-
                 areCredentialsValid = true;
             }
 
             return areCredentialsValid;
-        }
-
-        public void Signout()
-        {
-            this.NavigationService.NavigateAsync($@"/{nameof(SigninPage)}");
         }
     }
 }

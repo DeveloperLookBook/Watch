@@ -27,7 +27,6 @@ namespace Watch.ViewModels
         }
 
 
-
         public DelegateCommand MoveToCreateWatchPage { get; }
 
 
@@ -45,10 +44,10 @@ namespace Watch.ViewModels
         {
             NavigationParameters parameters = new NavigationParameters
             {
-                { nameof( this.SelectedTimeZone), this.SelectedTimeZone }
+                { "WatchTimeZone", this.SelectedTimeZone }
             };
 
-            this.NavigationService.NavigateAsync(nameof(CreateWatchPage), parameters);
+            this.NavigationService.GoBackAsync(parameters);
         }
 
         public override void OnNavigatedTo(INavigationParameters parameters)

@@ -4,25 +4,13 @@
              xmlns:skia="clr-namespace:SkiaSharp.Views.Forms;assembly=SkiaSharp.Views.Forms"
              x:Class="Watch.Controls.AnalogWatch">
   <ContentView.Content>
-        <Grid Padding="10">
-            <Grid.RowDefinitions>
-                <RowDefinition/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
+        <StackLayout Padding="0, 10, 0, 10">
             <skia:SKCanvasView x:Name       ="CanvasView" 
-                               PaintSurface ="OnCanvasViewPaintSurface" 
-                               HeightRequest="200" 
-                               WidthRequest ="200" 
-                               Grid.Row     ="0" 
-                               Grid.Column  ="0"/>
+                               HeightRequest="200"
+                               WidthRequest ="200"
+                               PaintSurface ="OnCanvasViewPaintSurface"/>
             <Label Text="{x:Binding Path=TimeZone.DisplayName}"
-                   HorizontalOptions="Center"
-                   Grid.Row="1"
-                   Grid.Column="0">
-            </Label>
-        </Grid>
+                   HorizontalOptions="Center"/>
+        </StackLayout>
     </ContentView.Content>
 </ContentView>

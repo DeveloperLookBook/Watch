@@ -32,26 +32,26 @@
             <StackLayout VerticalOptions="CenterAndExpand" 
                          Grid.Row="0" 
                          Grid.Column="0">
-                <Label   x:Name="Lable_UserLogin"    
-                         Text="Login:"/>
-                <Entry   x:Name="Entry_UserLogin"    
+                <Label   x:Name     ="Lable_UserLogin"    
+                         Text       ="Login:"/>
+                <Entry   x:Name     ="Entry_UserLogin"    
                          Placeholder="Input user login here"
-                         Text="{x:Binding UserLogin}"
-                         Style="{StaticResource EntryStyle}"/>
-                <Label   x:Name="Label_UserPassword" 
-                         Text="Password:"/>
-                <Entry   x:Name="Entry_UserPassword" 
+                         Text       ="{x:Binding UserLogin}"
+                         Style      ="{StaticResource EntryStyle}"/>
+                <Label   x:Name     ="Label_UserPassword" 
+                         Text       ="Password:"/>
+                <Entry   x:Name     ="Entry_UserPassword" 
                          Placeholder="Input user password here..." 
-                         IsPassword="True" 
-                         Text="{x:Binding UserPassword}"
-                         Style="{StaticResource EntryStyle}"/>
-                <Label   x:Name="Label_LoginErrorMessage" 
-                         Text="{x:Binding SigninErrorMessage}"
-                         Style="{StaticResource Label_LoginErrorMessage_Style}"/>
-                <Button  x:Name="Button_Signin" 
-                         Text="Signin" 
-                         Command="{x:Binding MoveToWatchListPage}"
-                         Style="{StaticResource Primary_Button}"/>
+                         IsPassword ="True" 
+                         Text       ="{x:Binding UserPassword}"
+                         Style      ="{StaticResource EntryStyle}"/>
+                <Label   x:Name     ="Label_LoginErrorMessage" 
+                         Text       ="{x:Binding SigninErrorMessage}"
+                         Style      ="{StaticResource Label_LoginErrorMessage_Style}"/>
+                <Button  x:Name     ="Button_Signin" 
+                         Text       ="Signin" 
+                         Command    ="{x:Binding Signin}"
+                         Style      ="{StaticResource Primary_Button}"/>
             </StackLayout>
         </Grid>
     </ContentPage.Content>

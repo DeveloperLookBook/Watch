@@ -4,6 +4,7 @@ using Prism.Navigation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Watch.Extensions;
 using Watch.Models.Users;
 using Watch.Models.Watches;
@@ -18,11 +19,12 @@ namespace Watch.ViewModels
     {
         #region FIELDS
 
-        public TimeZoneInfo _watchTimeZone;
-        public Color        _watchDialColor;
-        public Color        _watchArrowsColor;
+        private TimeZoneInfo _watchTimeZone;
+        private Color        _watchDialColor;
+        private Color        _watchArrowsColor;
 
         #endregion
+
 
         #region PROPERTIES
 
@@ -31,7 +33,6 @@ namespace Watch.ViewModels
             get => this._watchTimeZone;
             set => this.SetProperty(ref this._watchTimeZone, value);
         }
-
 
         public Color        WatchDialColor
         {
@@ -58,11 +59,27 @@ namespace Watch.ViewModels
 
         #region COMMANDS
 
-        public DelegateCommand SelectWatchDialColor   { get; }
-        public DelegateCommand SelectWatchArrowsColor { get; }
-        public DelegateCommand MoveToTimeZoneListPage { get; }
-        public DelegateCommand SaveWatch              { get; }
-        public DelegateCommand MoveToWatchListPage    { get; }
+        public DelegateCommand EditWatchDialColor   => new DelegateCommand(async () =>
+        {
+            await this.NavigateToDialColoListPageAsync();
+        });
+        public DelegateCommand EditWatchArrowsColor => new DelegateCommand(async () =>
+        {
+            await this.NavigateToArrowsColorListPageAsync();
+        });
+        public DelegateCommand EditTimeZoneInfo     => new DelegateCommand(async () =>
+        {
+            await this.NavigateToTimeZoneListPageAsync();
+        });
+        public DelegateCommand SaveWatch            => new DelegateCommand(async () =>
+        {
+            await this.SaveWatchAsync();
+            await this.NavigateToWatchListPageAsync();
+        });
+        public DelegateCommand CanselWatchChanges  => new DelegateCommand(async () =>
+        {
+            await this.NavigateToWatchListPageAsync();
+        });
 
         #endregion
 
@@ -75,16 +92,9 @@ namespace Watch.ViewModels
             IUsersService      usersService) 
             : base(navigationService)
         {
-            // Init services:
+            // Initialize services:
             this.User  = userService;
             this.Users = usersService;
-
-            // Create commands
-            this.SelectWatchDialColor   = new DelegateCommand(this.SelectWatchDialColorAsync  );
-            this.SelectWatchArrowsColor = new DelegateCommand(this.SelectWatchArrowsColorAsync);
-            this.MoveToTimeZoneListPage = new DelegateCommand(this.MoveToTimeZoneListPageAsync);
-            this.SaveWatch              = new DelegateCommand(this.SaveWatchAsync             );
-            this.MoveToWatchListPage    = new DelegateCommand(this.MoveToWatchListPageAsync   );
 
             // Set default watch settings:
             this.WatchTimeZone    = TimeZoneInfo.Local;
@@ -97,32 +107,40 @@ namespace Watch.ViewModels
 
         #region METHODS
 
-        private async void SelectWatchDialColorAsync()
+        private async Task NavigateToDialColoListPageAsync   ()
         {
             var parameters = new NavigationParameters
             {
                 { nameof(this.WatchDialColor), this.WatchDialColor }
             };
 
-            await this.NavigationService.NavigateAsync($@"/{nameof(ColorListPage)}", parameters);
+            await this.NavigationService.NavigateAsync($@"{nameof(ColorListPage)}", parameters);
         }
-
-        private async void SelectWatchArrowsColorAsync()
+        private async Task NavigateToArrowsColorListPageAsync()
         {
             var parameters = new NavigationParameters
             {
-                { nameof(this.WatchDialColor), this }
+                { nameof(this.WatchArrowsColor), this.WatchArrowsColor }
             };
 
-            await this.NavigationService.NavigateAsync($@"/{nameof(ColorListPage)}", parameters);
+            await this.NavigationService.NavigateAsync($@"{nameof(ColorListPage)}", parameters);
         }
-
-        private async void MoveToTimeZoneListPageAsync()
+        private async Task NavigateToTimeZoneListPageAsync   ()
         {
-            await this.NavigationService.NavigateAsync($@"/{nameof(TimeZoneListPage)}");
+            var parameters = new NavigationParameters()
+            {
+                { nameof(this.WatchTimeZone), this.WatchTimeZone }
+            };
+
+            await this.NavigationService.NavigateAsync($@"{nameof(TimeZoneListPage)}", parameters);
+        }
+        private async Task NavigateToWatchListPageAsync      ()
+        {
+            await this.NavigationService.GoBackAsync();
         }
 
-        private async void SaveWatchAsync()
+
+        private async Task SaveWatchAsync()
         {
             IUser user = await this.Users.ReadAsync(q => q.FindById(this.User.Id));
 
@@ -136,10 +154,6 @@ namespace Watch.ViewModels
             this.Users.SaveChangesAsync();
         }
 
-        private async void MoveToWatchListPageAsync()
-        {
-            await this.NavigationService.NavigateAsync($@"/{nameof(WatchListPage)}");
-        }
 
         public override void OnNavigatedTo(INavigationParameters parameters)
         {
@@ -152,6 +166,10 @@ namespace Watch.ViewModels
             else if (parameters.ContainsKey(nameof(this.WatchArrowsColor)))
             {
                 this.WatchArrowsColor = parameters.GetValue<Color>(nameof(this.WatchArrowsColor));
+            }
+            else if (parameters.ContainsKey(nameof(this.WatchTimeZone)))
+            {
+                this.WatchTimeZone = parameters.GetValue<TimeZoneInfo>(nameof(this.WatchTimeZone));
             }
         }
 

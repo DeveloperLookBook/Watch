@@ -50,10 +50,23 @@ namespace Watch.ViewModels
 
         #region COMMANDS
 
-        public DelegateCommand MoveToCreateWatchPage { get; }
-        public DelegateCommand RemoveWatch           { get; }
-        public DelegateCommand MoveToUpdateWatchPage { get; }
-        public DelegateCommand LoadWatches           { get; }
+        public DelegateCommand CreateWatch => new DelegateCommand(() => 
+        {
+            this.NavigateToCreateWatchPageAsync();
+        });
+        public DelegateCommand RemoveWatch => new DelegateCommand(() =>
+        {
+            this.RemoveUserWatchAsync();
+        });
+        public DelegateCommand UpdateWatch => new DelegateCommand(() =>
+        {
+            this.NavigateToUpdateWatchPageAsync();
+        });
+        public DelegateCommand LoadWatches => new DelegateCommand(() =>
+        {
+            this.LoadWatchesAsync();
+        });
+
         #endregion
 
 
@@ -66,14 +79,9 @@ namespace Watch.ViewModels
             IWatchesService    watchesService)
             : base(navigationService)
         {
-            this.User        = userService;
-            this.Users       = usersService;
-            this.Watches     = watchesService;
-
-            this.MoveToCreateWatchPage = new DelegateCommand(this.MoveToCreateWatchPageAsync);
-            this.RemoveWatch           = new DelegateCommand(this.RemoveWatchAsync          );
-            this.MoveToUpdateWatchPage = new DelegateCommand(this.UpdateWatchAsync          );
-            this.LoadWatches           = new DelegateCommand(this.LoadWatchesAsync          );
+            this.User    = userService;
+            this.Users   = usersService;
+            this.Watches = watchesService;
         }        
 
         #endregion
@@ -81,12 +89,16 @@ namespace Watch.ViewModels
 
         #region METHODS
 
-        private async void MoveToCreateWatchPageAsync()
+        private async void NavigateToCreateWatchPageAsync()
         {
-            await this.NavigationService.NavigateAsync($@"/{nameof(CreateWatchPage)}");
+            await this.NavigationService.NavigateAsync($@"{nameof(CreateWatchPage)}");
+        }
+        private async void NavigateToUpdateWatchPageAsync()
+        {
+            await this.NavigationService.NavigateAsync($@"{nameof(UpdateWatchPage)}");
         }
 
-        private async void RemoveWatchAsync()
+        private async void RemoveUserWatchAsync()
         {
             var user  = await this.Users  .ReadAsync(q => q.FindById(this.User.Id        ));
             var watch = await this.Watches.ReadAsync(q => q.FindById(this.SelectedWatchId));
@@ -95,13 +107,7 @@ namespace Watch.ViewModels
 
             this.Users.SaveChangesAsync();
         }
-
-        private async void UpdateWatchAsync()
-        {
-            await this.NavigationService.NavigateAsync($@"/{nameof(UpdateWatchPage)}");
-        }
-
-        private async void LoadWatchesAsync()
+        private async void LoadWatchesAsync    ()
         {
             this.UserWatches = await this.Users.ReadAsync(q => q.GetUserWatches(this.User.Id));
         }

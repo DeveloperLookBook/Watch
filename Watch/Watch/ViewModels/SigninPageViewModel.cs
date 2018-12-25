@@ -23,25 +23,24 @@ namespace Watch.ViewModels
 
         #endregion
 
-
-        #region PROPERTIES
+        #region NOTIFICATION PROPERTIES
 
         public string UserLogin
         {
             get => this._userLogin;
-            set => this.SetProperty(ref this._userLogin   , value, nameof(this.UserLogin));
+            set => this.SetProperty(ref this._userLogin, value);
         }
 
         public string UserPassword
         {
             get => this._userPassword;
-            set => this.SetProperty(ref this._userPassword, value, nameof(this.UserPassword));
+            set => this.SetProperty(ref this._userPassword, value);
         }
 
         public string SigninErrorMessage
         {
             get => this._signinErrorMessage;
-            set => this.SetProperty(ref this._signinErrorMessage, value, nameof(this.SigninErrorMessage));
+            set => this.SetProperty(ref this._signinErrorMessage, value);
         }
 
         #endregion
@@ -50,27 +49,36 @@ namespace Watch.ViewModels
         #region SERVICES
 
         IAuthenticationService AuthenticationService { get; }
-        IPageDialogService     PageDialogService     { get; }
 
         #endregion
 
 
         #region COMMANDS
 
-        public DelegateCommand MoveToWatchListPage  { get; }
+        public DelegateCommand Signin =>  new DelegateCommand(async () =>
+        {
+            var isUserValid = await this.IsUserValidAsync();
+
+            if  (isUserValid) { this.NavigateToWatchListPageAsync(); }
+            else              { this.ShowSiginErrorMessageToUser (); }
+        });
 
         #endregion
 
 
         #region CONSTRUCTORS
 
-        public SigninPageViewModel(INavigationService navigationService, IAuthenticationService authenticationService)
+        public SigninPageViewModel(
+            INavigationService     navigationService, 
+            IAuthenticationService authenticationService)
             : base(navigationService)
         {
-            if (authenticationService is null) throw new ArgumentNullException(nameof(authenticationService));
+            if (authenticationService is null)
+            {
+                throw new ArgumentNullException(nameof(authenticationService));
+            }
 
             this.AuthenticationService = authenticationService ;
-            this.MoveToWatchListPage   = new DelegateCommand(this.MoveToWatchListPageAsync);
             this.Title                 = "Signin";
         }
 
@@ -78,12 +86,17 @@ namespace Watch.ViewModels
 
         #region METHODS
 
-        private async void MoveToWatchListPageAsync()
+        private async Task<bool> IsUserValidAsync            ()
         {
-            if (!await this.AuthenticationService.SigninAsync(this.UserLogin, this.UserPassword))
-            {
-                this.SigninErrorMessage = "User login or password is invalid.";
-            }
+            return await this.AuthenticationService.IsUserValid(this.UserLogin, this.UserPassword);
+        }
+        private async void       NavigateToWatchListPageAsync()
+        {
+            await this.NavigationService.NavigateAsync($@"{nameof(WatchListPage)}");
+        }
+        private       void       ShowSiginErrorMessageToUser ()
+        {
+            this.SigninErrorMessage = "User login or password is invalid.";
         }
 
         #endregion

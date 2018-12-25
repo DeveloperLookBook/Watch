@@ -10,14 +10,5 @@ namespace Watch.Views
         {
             InitializeComponent();
         }
-
-        protected override void OnBindingContextChanged()
-        {
-            base.OnBindingContextChanged();
-
-            var context = (WatchListPageViewModel)this.BindingContext;
-
-            context?.LoadWatches.Execute();
-        }
     }
 }

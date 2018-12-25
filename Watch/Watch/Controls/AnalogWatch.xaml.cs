@@ -160,13 +160,13 @@ namespace Watch.Controls
         }
         private void SetViewContext         ()
         {
-            this.BindingContext = this;
+            this.Content.BindingContext = this;
         }
         private void UpdateWatchCanvasView  (SKPaintSurfaceEventArgs args)
         {
-            SKImageInfo info = args.Info;
-            SKSurface surface = args.Surface;
-            SKCanvas canvas = surface.Canvas;
+            SKImageInfo info    = args.Info;
+            SKSurface   surface = args.Surface;
+            SKCanvas    canvas  = surface.Canvas;
 
 
             canvas.Clear();

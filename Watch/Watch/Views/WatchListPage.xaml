@@ -10,10 +10,10 @@
         </ResourceDictionary> 
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="Fill">
+        <StackLayout x:Name="StackLayout" HorizontalOptions="Fill">
             <Button Text="Add watch" 
-                    Style  ="{StaticResource Primary_Button}"
-                    Command="{Binding MoveToCreateWatchPage}"/>
+                    Style  ="{x:StaticResource Primary_Button}"
+                    Command="{x:Binding CreateWatch}"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

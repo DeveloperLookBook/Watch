@@ -52,7 +52,7 @@ namespace Watch.ViewModels
         public ColorListPageViewModel(INavigationService navigationService, IColorService colorService) 
             : base(navigationService)
         {
-            if (colorService is null) { throw new ArgumentNullException(nameof(colorService)); }
+            if (colorService is null) throw new ArgumentNullException(nameof(colorService));
 
             this.Colors                = colorService.Colors;
             this.MoveToCreateWatchPage = new DelegateCommand(MoveToCreateWatchPageAsync);
@@ -86,17 +86,12 @@ namespace Watch.ViewModels
 
         public async void MoveToCreateWatchPageAsync()
         {
-            //NavigationParameters parameters = new NavigationParameters
-            //{
-            //    { this.NavigationParameterKey, this.SelectedColor }
-            //};
+            NavigationParameters parameters = new NavigationParameters
+            {
+                { this.NavigationParameterKey, this.SelectedColor }
+            };
 
-            await this.NavigationService.NavigateAsync(nameof(CreateWatchPage));
-
-            // This method doesn't work =(
-            //var result = await this.NavigationService.GoBackAsync(parameters);
-
-            //await this.NavigationService.GoBackAsync();
+            await this.NavigationService.GoBackAsync(parameters);
         }
 
         #endregion

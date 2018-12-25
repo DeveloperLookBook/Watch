@@ -4,7 +4,6 @@ namespace Watch.Services
 {
     public interface IAuthenticationService
     {
-        Task<bool> SigninAsync(string login, string password);
-        void       Signout();
+        Task<bool> IsUserValid(string login, string password);
     }
 }

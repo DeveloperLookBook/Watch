@@ -10,18 +10,19 @@
     </ContentPage.Resources>
     <ContentPage.Content>
         <StackLayout HorizontalOptions="Fill">
-            <Local:AnalogWatch TimeZone   ="{x:Binding WatchTimeZone}" 
-                               ArrowsColor="{x:Binding WatchArrowsColor}" 
-                               DialColor  ="{x:Binding WatchDialColor}"/>
+            <Local:AnalogWatch TimeZone   ="{Binding Path=WatchTimeZone   }" 
+                               ArrowsColor="{Binding Path=WatchArrowsColor}" 
+                               DialColor  ="{Binding Path=WatchDialColor  }"/>
             <Button x:Name ="Button_WatchTimeZone" 
                     Text   ="Change Time Zone..."
-                    Command="{x:Binding MoveToTimeZoneListPage}"/>
+                    Command="{x:Binding EditTimeZoneInfo}"/>
             <Button x:Name ="Button_WatchDialColor"
                     Text   ="Change Dial Color..."
-                    Command="{x:Binding SelectWatchDialColor  }"/>
+                    Command="{x:Binding EditWatchDialColor }"/>
             <Button x:Name ="Button_WatchArrowsColor"
                     Text   ="Change Arrows Color..."
-                    Command="{x:Binding SelectWatchArrowsColor}"/>
+                    Command="{x:Binding EditWatchArrowsColor}"/>
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -36,13 +37,13 @@
                         Style      ="{StaticResource Primary_Button}"
                         Grid.Column="0" 
                         Grid.Row   ="0"
-                        Command    ="{x:Binding MoveToWatchListPageAsync}"/>
+                        Command    ="{x:Binding SaveWatch}"/>
                 <Button x:Name     ="Button_"
                         Text       ="Cancel"
                         Style      ="{StaticResource Primary_Button}"
                         Grid.Column="1"
                         Grid.Row   ="0"
-                        Command    ="{Binding MoveToWatchListPage}"/>
+                        Command    ="{x:Binding CanselWatchChanges}"/>
 
             </Grid>
         </StackLayout>
