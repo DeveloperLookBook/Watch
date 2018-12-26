@@ -2,6 +2,8 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Watch.Views.WatchListPage"
+             xmlns:Local="clr-namespace:Watch.Controls"
+             x:Name="ContentPage_WatchListPage"
              Title="{Binding Title}"
              NavigationPage.HasNavigationBar="False">
     <ContentPage.Resources>
@@ -10,10 +12,38 @@
         </ResourceDictionary> 
     </ContentPage.Resources>
     <ContentPage.Content>
-        <StackLayout x:Name="StackLayout" HorizontalOptions="Fill">
-            <Button Text="Add watch" 
+        <StackLayout HorizontalOptions="Fill">
+            <Button Text   ="Add watch" 
                     Style  ="{x:StaticResource Primary_Button}"
-                    Command="{x:Binding CreateWatch}"/>
+                    Command="{x:Binding        CreateWatch}"/>
+            <StackLayout HorizontalOptions="Fill">
+                <ListView x:Name="ListView_UserWatches"
+                          ItemsSource ="{x:Binding Path=UserWatches      }"
+                          SelectedItem="{x:Binding Path=SelectedUserWatch, Mode=TwoWay}">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <ViewCell.View>
+                                    <StackLayout>
+                                        <Local:AnalogWatch TimeZone   ="{x:Binding Path=TimeZone   }"
+                                                           ArrowsColor="{x:Binding Path=ArrowsColor }"
+                                                           DialColor  ="{x:Binding Path=DialColor  }"/>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition></ColumnDefinition>
+                                                <ColumnDefinition></ColumnDefinition>
+                                            </Grid.ColumnDefinitions>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition></RowDefinition>
+                                            </Grid.RowDefinitions>
+                                        </Grid>
+                                    </StackLayout>
+                                </ViewCell.View>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </StackLayout>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

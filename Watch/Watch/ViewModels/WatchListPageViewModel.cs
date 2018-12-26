@@ -5,12 +5,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using Watch.Extensions;
 using Watch.Models.Users;
 using Watch.Models.Watches;
 using Watch.Services;
 using Watch.Services.Repositories;
 using Watch.Views;
+using Xamarin.Forms;
 
 namespace Watch.ViewModels
 {
@@ -18,17 +20,23 @@ namespace Watch.ViewModels
     {
         #region FIELDS
 
-        private int          _selectedWatchId;
+        private IWatch       _selectedUserWatch;
         private List<IWatch> _watches;
 
         #endregion
 
+
         #region PROPERTIES
 
-        public int          SelectedWatchId
+        public IWatch      SelectedUserWatch
         {
-            get => this._selectedWatchId;
-            set => this.SetProperty(ref this._selectedWatchId, value);
+            get => this._selectedUserWatch;
+            set
+            {
+                this.SetProperty(ref this._selectedUserWatch, value);
+
+                if (value != null) { this.UpdateWatch.Execute(); }
+            }
         }
 
         public List<IWatch> UserWatches
@@ -39,32 +47,29 @@ namespace Watch.ViewModels
 
         #endregion
 
+
         #region SERVICES
 
-        private IUserService    User    { get; }
-        private IUsersService   Users   { get; }
-        private IWatchesService Watches { get; }
+        private IUserService    UserService    { get; }
+        private IUsersService   UsersService   { get; }
+        private IWatchesService WatchesService { get; }
 
         #endregion
 
 
         #region COMMANDS
 
-        public DelegateCommand CreateWatch => new DelegateCommand(() => 
+        public DelegateCommand CreateWatch     => new DelegateCommand(async () =>
         {
-            this.NavigateToCreateWatchPageAsync();
+            await this.NavigateToCreateWatchPageAsync();
         });
-        public DelegateCommand RemoveWatch => new DelegateCommand(() =>
+        public DelegateCommand UpdateWatch     => new DelegateCommand(async () =>
         {
-            this.RemoveUserWatchAsync();
+            await this.NavigateToUpdateWatchPageAsync();
         });
-        public DelegateCommand UpdateWatch => new DelegateCommand(() =>
+        public DelegateCommand UpdateWatchList => new DelegateCommand(async () =>
         {
-            this.NavigateToUpdateWatchPageAsync();
-        });
-        public DelegateCommand LoadWatches => new DelegateCommand(() =>
-        {
-            this.LoadWatchesAsync();
+            await this.UpdateUserWatchListAsync();
         });
 
         #endregion
@@ -79,9 +84,11 @@ namespace Watch.ViewModels
             IWatchesService    watchesService)
             : base(navigationService)
         {
-            this.User    = userService;
-            this.Users   = usersService;
-            this.Watches = watchesService;
+            this.UserService    = userService;
+            this.UsersService   = usersService;
+            this.WatchesService = watchesService;
+
+            this.InitializeWatchListAsync();
         }        
 
         #endregion
@@ -89,27 +96,36 @@ namespace Watch.ViewModels
 
         #region METHODS
 
-        private async void NavigateToCreateWatchPageAsync()
+        private async Task NavigateToCreateWatchPageAsync()
         {
             await this.NavigationService.NavigateAsync($@"{nameof(CreateWatchPage)}");
         }
-        private async void NavigateToUpdateWatchPageAsync()
+        private async Task NavigateToUpdateWatchPageAsync()
         {
-            await this.NavigationService.NavigateAsync($@"{nameof(UpdateWatchPage)}");
+            var parameters = new NavigationParameters()
+            {
+                { nameof(this.SelectedUserWatch) , this.SelectedUserWatch }
+            };
+            await this.NavigationService.NavigateAsync($@"{nameof(UpdateWatchPage)}", parameters);
         }
 
-        private async void RemoveUserWatchAsync()
+        private async Task UpdateUserWatchListAsync()
         {
-            var user  = await this.Users  .ReadAsync(q => q.FindById(this.User.Id        ));
-            var watch = await this.Watches.ReadAsync(q => q.FindById(this.SelectedWatchId));
-
-            user.Watches.Remove(watch as Models.Watches.Watch);
-
-            this.Users.SaveChangesAsync();
+            this.UserWatches = await this.UsersService.ReadAsync(
+                q => q.GetUserWatches(this.UserService.Id));
         }
-        private async void LoadWatchesAsync    ()
+        private async void InitializeWatchListAsync()
         {
-            this.UserWatches = await this.Users.ReadAsync(q => q.GetUserWatches(this.User.Id));
+            this.UserWatches = await this.UsersService.ReadAsync(
+                q => q.GetUserWatches(this.UserService.Id));
+        }
+
+        public override void OnNavigatedTo(INavigationParameters parameters)
+        {
+            base.OnNavigatedTo(parameters);
+
+            this.SelectedUserWatch = null;
+            this.UpdateWatchList.Execute();
         }
 
         #endregion
